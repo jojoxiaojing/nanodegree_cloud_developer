@@ -18,6 +18,15 @@ router.get('/', async (req: Request, res: Response) => {
 
 //Add an endpoint to GET a specific resource by Primary Key
 router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    const item = await FeedItem.findByPk(id);
+    if (item && item.url) {
+        item.url = AWS.getGetSignedUrl(item.url)
+    } else {
+        res.status(404).send("Item with required ID does not exist")
+    }
+
+    res.send(item)
 
 
 });
@@ -26,8 +35,24 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.patch('/:id',
     requireAuth,
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        let { id } = req.params;
+        let { url } = req.body;
+        if (!url) {
+            res.status(400).send("A update URL is required")
+        }
+        const items = await FeedItem.update({ url: url },
+            { returning: true, where: { id: id } })
+        if (!items[0]) {
+            res.status(404).send("Item does not exist")
+        }
+
+        const item = items[1][0]
+
+        if (item.url) {
+            item.url = AWS.getGetSignedUrl(item.url)
+        }
+
+        res.send(item)
     });
 
 
