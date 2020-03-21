@@ -19,6 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
 //Add an endpoint to GET a specific resource by Primary Key
 router.get('/:id', async (req: Request, res: Response) => {
 
+
 });
 
 // update a specific resource
