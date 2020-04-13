@@ -6,7 +6,7 @@ export const config = {
     "host": process.env.POSTGRESS_HOST,
     "dialect": process.env.POSTGRESS_DIALECT,
     "aws_region": process.env.POSTGRESS_REGION,
-    "aws_profile": "",
+    "aws_profile": process.env.AWS_PROFILE,
     "aws_media_bucket": process.env.POSTGRESS_BUCKET
 
   },
@@ -16,5 +16,8 @@ export const config = {
     "database": "udagram_prod",
     "host": "",
     "dialect": "postgres"
+  },
+  "jwt": {
+    "secret": "hello",
   }
 }
